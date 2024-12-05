@@ -1,0 +1,91 @@
+---
+title: Webhooks
+description: "Notify endpoints when contracts are signed"
+---
+
+## Setup
+
+Learn how to create and configure a webhook.
+
+To create a webhook:
+
+    1. From the [ROGER Dashboard](https://app.thanksroger.com), open the
+    **Settings** for your workspace from the account menu in the top-right
+    corner of the screen.
+    1. Click the **Webhooks** section from the left navigation panel.
+    1. Click **Create webhook**.
+    1. Enter the URL of the endpoint where you would like to receive JSON
+    webhook events, and specify what teams to include contract notifications
+    for.
+    1. Click **Create** to confirm and generate a webhook secret.
+
+## Handling events
+
+Events are sent to configured webhook URLs via an HTTP POST request with a JSON
+body (`application/json`).
+
+### Event authentication
+
+A secret is generated with each webhook endpoint you configure in ROGER. You can
+view the secret key for each webhook in the **Webhooks** section of the
+**Settings** screen from the [ROGER Dashboard](https://app.thanksroger.com).
+
+To verify that an event delivered to your endpoint truly came from ROGER, two
+additional request headers are included in the HTTP POST request:
+
+   * `x-roger-timestamp` - Number of milliseconds since January 1, 1970 UTC.
+   * `x-roger-signature` - HMAC, computed as the SHA-256 digest of the
+     concatenation of the X-Roger-Timestamp and the JSON request body
+     represented as strings.
+
+Developers should only trust events that have a valid HMAC in the
+`x-roger-signature` header.
+
+### Event body
+
+Here is an example JSON body with comments:
+
+```
+{
+  # Type of webhook event.
+  "event": "contract.signed",
+
+  # Name and email address of the signer.
+  "signer": {
+    "name": "John Hancock",
+    "email": "john.hancock@gmail.com"
+  },
+
+  # Data submitted by the signer.
+  "submission": {
+
+    # Number of milliseconds since January 1, 1970 UTC.
+    "timestamp": 1733367410253,
+
+    # Ordered field values.
+    "values": [
+      # First field...
+      {
+        # ID of the field.
+        # (Remains stable even if fields are reordered in the template.)
+        "id": "BbCoK2kaWKFEkCoQymks",
+
+        # Type of the field.
+        "type": "singletext",
+
+        # Value of the field.
+        "value": "John Hancock"
+      },
+      # Second field...
+      {
+        "id": "BeLMd7tgYUeheQwnMDDe",
+        "type": "signature",
+        "value": "John Hancock"
+      }
+    ]
+
+  },
+
+  pdfUrl: "<URL of the signed PDF>"
+}
+```
