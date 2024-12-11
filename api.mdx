@@ -4,9 +4,95 @@ description: "Programatically create and send ROGER contracts"
 ---
 
 <Info>
-  **Coming soon**: Please email
-  [support@thanksroger.com](mailto:support@thanksroger.com) to request early
-  access.
+  Looking for the [Legacy ROGER API
+  Documentation](https://app.theneo.io/thanksroger/roger)?
 </Info>
 
-Looking for the [Legacy ROGER API Documentation](https://app.theneo.io/thanksroger/roger)?
+## Setup
+
+Learn how to create and configure an API key for access to the Developer API.
+
+To create an API key:
+
+    1. From the [ROGER Dashboard](https://app.thanksroger.com), open the
+    **Settings** for your workspace from the account menu in the top-right
+    corner of the screen.
+    1. Click the **API keys** section from the left navigation panel.
+    1. Click **Create API key**.
+    1. Specify what teams this API can create contracts in.
+    1. Click **Create** to confirm and generate an API key.
+    1. Copy the API key for your records -- it will not be shown again.
+
+## Authentication
+
+All requests made to the ROGER Developer API must be authenticated with a valid
+API key. The API key must be passed in the `Authorization` HTTP header using the
+`Bearer` scheme. Below is an example of a header specifying your API key:
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Workspace IDs
+
+Most of the Developer API endpoints require specifying your Workspace ID,
+usually provided as the value of a property `workspaceId` in the request body.
+
+You can find the ID of your workspace in the URL of your ROGER Dashboard.
+
+In the below example, your `workspaceId` would be `wvEOhUlU8rHy5EXAwNn1`:
+
+```
+https://app.thanksroger.com/workspaces/wvEOhUlU8rHy5EXAwNn1/contracts
+```
+
+## Template IDs
+
+Some of the Developer API endpoints require specifying a Template ID, usually
+provided as the value of a property `templateId` in the request body.
+
+You can find the ID of your workspace in the URL of the template's edit screen.
+
+In the below example, your `templateId` would be `E23eipzNxLKe28bYP1FI`:
+
+```
+https://app.thanksroger.com/workspaces/wvEOhUlU8rHy5EXAwNn1/templates/E23eipzNxLKe28bYP1FI
+```
+
+## Creating a contract from a template
+
+To create a contract from a template, specify the ID of the template to use and
+the values of each variable the template requires (without the `@` prefix). The
+`createdBy` parameter should be set to an email address of a user from a team
+within your workspace.
+
+```
+POST https://app.thanksroger.com/api/v3/workspaces/{workspaceId}/contracts
+
+Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json
+
+{
+  "templateId": "TEMPLATE_ID",
+  "templateValues": {
+    "Signer name": {
+      "type": "singletext",
+      "value": "VALUE_AS_STRING"
+    },
+    "Signer email": {
+      "type": "singletext",
+      "value": "VALUE_AS_STRING"
+    },
+    "List of services": {
+      "type": "multitext",
+      "value": "LINE_1\nLINE_2"
+    },
+    "Statement of work": {
+      "type": "richtext",
+      "value": "<ol><li>Step 1</li><li>Step 2</li></ol>"
+    }
+  },
+  "createdBy": "user@yourcompany.com",
+  "name": "NEW_CONTRACT_NAME"
+}
+```
