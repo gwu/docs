@@ -96,3 +96,16 @@ Content-Type: application/json
   "name": "NEW_CONTRACT_NAME"
 }
 ```
+
+This method will respond with the `workspaceId`, `contractId`, and a
+`signingLink`, which can be used to sign the contract.
+
+```
+200 OK
+
+{
+  "workspaceId": "YOUR_WORKSPACE_ID",
+  "contractId": "CREATED_CONTRACT_ID",
+  "signingLink": "https://app.thanksroger.com/sign/..."
+}
+```
