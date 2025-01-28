@@ -110,7 +110,7 @@ This method will respond with the `workspaceId`, `contractId`, and a
 }
 ```
 
-### Sending the created contract via email.
+### Sending the created contract via email
 
 By default, the API method to create a contract (above) will just create the
 contract and return to you the signingLink, which you can choose to deliver to
@@ -155,7 +155,24 @@ workspace's settings will be used. If your workspace has a default logo
 configured, but you wish to omit the logo in this email, use `null` for
 `logoUrl`.
 
-### Passing additional information to webhook events.
+#### Optimizing email deliverability
+
+When using ROGER to send signature request emails, the message will come from
+roger@thanksroger.com with the `reply-to` header set to the `createdBy` user. To
+maximize deliverability to the recipient's inbox, ROGER uses minimal,
+email-compatible HTML that has been tested with email deliverability tools like
+Litmus and Unspam. Here are a few other tips to help make sure your emails land
+in recipient inboxes:
+
+   - Avoid spammy keywords in the subject or message (e.g. "100% free" or "act
+     now").
+   - Write a personalized message to help the message get marked as
+     private/direct instead of a bulk email.
+   - Include the name of the signer in the contract's configuration. In
+     addition to just the email address of the signer, also specify the signer's
+     full name. It will automatically be used in the email's `to` header.
+
+### Passing additional information to webhook events
 
 It can be useful to tie additional information to a contract, such as customer
 or deal identifiers from your CRM.
