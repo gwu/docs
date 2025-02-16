@@ -172,6 +172,34 @@ in recipient inboxes:
      addition to just the email address of the signer, also specify the signer's
      full name. It will automatically be used in the email's `to` header.
 
+### Variable types
+
+Variables in ROGER templates are typed. When providing variable values via the
+contract creation API, the type of the value must be compatible with the type
+of the variable.
+
+Template variable values are specified in the `templateValues` property of the
+request body. It is a JSON record mapping from names of template variables to
+a typed value object. A typed value object is is a JSON record with a `type`
+property. Other properties of the typed value object depend on the type.
+
+#### Variable types:
+
+| Type            | Description                | Value type   |
+|-----------------|----------------------------|--------------|
+| `singletext`    | Text (single line)         | `singletext` |
+| `multitext`     | Paragraph (multiple lines) | `multitext`  |
+| `richtext`      | Rich text (HTML)           | `richtext`   |
+| `chooseonetext` | Choose one option          | `singletext` |
+
+#### Typed value objects:
+
+| Type         | Description           | Example                                                    |
+|--------------|-----------------------|------------------------------------------------------------|
+| `singletext` | Text with no newlines | `{ "type": "singletext", "value": "foo" }`                 |
+| `multitext`  | Text with newlines    | `{ "type": "multitext", "value": "foo\nbar" }`             |
+| `richtext`   | HTML-formatted text   | `{ "type": "richtext", "value": "<ul><li>foo</li></ul>" }` |
+
 ### Passing additional information to webhook events
 
 It can be useful to tie additional information to a contract, such as customer
