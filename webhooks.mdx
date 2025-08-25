@@ -50,6 +50,9 @@ Here is an example JSON body with comments:
   # Type of webhook event.
   "event": "contract.signed",
 
+  # Name of the contract.
+  "name": "Sales contract - Acme Inc.",
+
   # Name and email address of the signer.
   "signer": {
     "name": "John Hancock",
@@ -88,6 +91,10 @@ Here is an example JSON body with comments:
 
   # This will only be present if the contract was created from a template.
   "template": {
+    "source": {
+      "id": "e09f283wnenOw02nvZld"
+      "name": "Sales contract v1"
+    },
     "variables": [
       {
         "name": "Price",
